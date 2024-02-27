@@ -13,7 +13,9 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
 
     if (!$result) {
         // Error in SQL query
-        echo "Error: " . mysqli_error($conn);
+        $error_msg = "SQL Error: " . mysqli_error($conn);
+        error_log($error_msg, 3, "error_log.txt"); // Log the error to a file
+        header("Location: index.php?error=Login failed, please try again later");
         exit();
     }
 
@@ -25,21 +27,21 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
             $_SESSION['user_name'] = $row['user_name'];
             $_SESSION['name'] = $row['name'];
             $_SESSION['id'] = $row['id'];
-            #header("Location: home.php"); // Redirect to home page
+            header("Location: home.php"); // Redirect to home page
             exit();
         } else {
             // Incorrect password
-            #header("Location: index.php?error=Incorrect password");
+            header("Location: index.php?error=Incorrect password");
             exit();
         }
     } else {
         // No user found
-        #header("Location: index.php?error=User not found");
+        header("Location: index.php?error=User not found");
         exit();
     }
 } else {
     // Redirect to the login page if the login form was not submitted
-    #header("Location: index.php");
+    header("Location: index.php");
     exit();
 }
 ?>
