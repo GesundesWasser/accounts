@@ -3,45 +3,51 @@ session_start();
 include "db_conn.php";
 
 if (isset($_POST['uname']) && isset($_POST['password'])) {
-    // Validate and sanitize input
-    $uname = mysqli_real_escape_string($conn, $_POST['uname']);
-    $pass = mysqli_real_escape_string($conn, $_POST['password']);
 
-    // Query the database to retrieve user information
-    $sql = "SELECT * FROM users WHERE user_name='$uname'";
-    $result = mysqli_query($conn, $sql);
+	function validate($data){
+       $data = trim($data);
+	   $data = stripslashes($data);
+	   $data = htmlspecialchars($data);
+	   return $data;
+	}
 
-    if (!$result) {
-        // Error in SQL query
-        $error_msg = "SQL Error: " . mysqli_error($conn);
-        error_log($error_msg, 3, "error_log.txt"); // Log the error to a file
-        header("Location: index.php?error=Login failed, please try again later");
-        exit();
-    }
+	$uname = validate($_POST['uname']);
+	$pass = validate($_POST['password']);
 
-    if ($row = mysqli_fetch_assoc($result)) {
-        // Verify password
-        if (password_verify($pass, $row['password'])) {
-            // Password is correct, set session variables
-            $_SESSION['logged_in'] = true;
-            $_SESSION['user_name'] = $row['user_name'];
-            $_SESSION['name'] = $row['name'];
-            $_SESSION['id'] = $row['id'];
-            header("Location: home.php"); // Redirect to home page
-            exit();
-        } else {
-            // Incorrect password
-            header("Location: index.php?error=Incorrect password");
-            exit();
-        }
-    } else {
-        // No user found
-        header("Location: index.php?error=User not found");
-        exit();
-    }
-} else {
-    // Redirect to the login page if the login form was not submitted
-    header("Location: index.php");
-    exit();
+	if (empty($uname)) {
+		header("Location: index.php?error=User Name is required");
+	    exit();
+	}else if(empty($pass)){
+        header("Location: index.php?error=Password is required");
+	    exit();
+	}else{
+		// hashing the password
+        $pass = md5($pass);
+
+        
+		$sql = "SELECT * FROM users WHERE user_name='$uname' AND password='$pass'";
+
+		$result = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($result) === 1) {
+			$row = mysqli_fetch_assoc($result);
+            if ($row['user_name'] === $uname && $row['password'] === $pass) {
+            	$_SESSION['user_name'] = $row['user_name'];
+            	$_SESSION['name'] = $row['name'];
+            	$_SESSION['id'] = $row['id'];
+            	header("Location: home.php");
+		        exit();
+            }else{
+				header("Location: index.php?error=Incorect User name or password");
+		        exit();
+			}
+		}else{
+			header("Location: index.php?error=Incorect User name or password");
+	        exit();
+		}
+	}
+	
+}else{
+	header("Location: index.php");
+	exit();
 }
-?>
