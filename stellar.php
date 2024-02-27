@@ -1,8 +1,9 @@
 <?php 
 session_start();
 
-if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
-?>
+if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
+
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -157,8 +158,8 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         </section>
 
         <section id="section3">
-            <h2>PLACEHOLDER</h2>
-            <p>TEXT</p>
+            <h2>DEBUG-SECTION</h2>
+            <p>USERNAME: <?php echo $_SESSION['name']; ?></p>
             <button disabled>Coming Soon...</button>
         </section>
 
