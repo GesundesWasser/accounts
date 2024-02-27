@@ -2,8 +2,7 @@
 session_start();
 
 if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
-
- ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -177,8 +176,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
 </footer>
 
 <?php 
-}else{
-     header("Location: index.php");
-     exit();
+} else {
+    header("Location: site"); // Redirect to the "site" page
+    exit();
 }
- ?>
+?>
