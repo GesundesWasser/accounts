@@ -1,9 +1,8 @@
 <?php 
 session_start();
 
-if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
-
- ?>
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -178,7 +177,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
 
 <?php 
 } else {
-    header("Location: site"); // Redirect to the "site" page
+    // Redirect to the login page if not logged in
+    header("Location: ../site"); // or wherever you want to redirect if not logged in
     exit();
 }
 ?>
