@@ -29,12 +29,12 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
             exit();
         } else {
             // Incorrect password
-            header("Location: index.php?error=Incorrect password");
+            #header("Location: index.php?error=Incorrect password");
             exit();
         }
     } else {
         // No user found
-        header("Location: index.php?error=User not found");
+        #header("Location: index.php?error=User not found");
         exit();
     }
 } else {
