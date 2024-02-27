@@ -5,7 +5,6 @@
   font-family: "Poppins", sans-serif;
 }
 body{
-  background-image: url('../img/'); /* Default to no background */
   display: flex;
   justify-content: center;
   align-items: center;
