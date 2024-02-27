@@ -11,6 +11,12 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
     $sql = "SELECT * FROM users WHERE user_name='$uname'";
     $result = mysqli_query($conn, $sql);
 
+    if (!$result) {
+        // Error in SQL query
+        echo "Error: " . mysqli_error($conn);
+        exit();
+    }
+
     if ($row = mysqli_fetch_assoc($result)) {
         // Verify password
         if (password_verify($pass, $row['password'])) {
@@ -19,7 +25,7 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
             $_SESSION['user_name'] = $row['user_name'];
             $_SESSION['name'] = $row['name'];
             $_SESSION['id'] = $row['id'];
-            header("Location: home.php"); // Redirect to home page
+            #header("Location: home.php"); // Redirect to home page
             exit();
         } else {
             // Incorrect password
@@ -33,7 +39,7 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
     }
 } else {
     // Redirect to the login page if the login form was not submitted
-    header("Location: index.php");
+    #header("Location: index.php");
     exit();
 }
 ?>
